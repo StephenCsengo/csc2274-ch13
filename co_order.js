@@ -34,6 +34,13 @@ window.addEventListener("load", function () {
   orderForm.elements.model.focus();
   //calculate the cost of the order
   calcOrder();
+  //event handlers for web form
+  orderForm.elements.model.onchange = calcOrder;
+  orderForm.elements.qty.onchange = calcOrder;
+  let planOptions = document.querySelectorAll('input[name="protection"]');
+  for (let i = 0; i < planOptions.length; i++) {
+    planOptions[i].onclick = calcOrder;
+  }
 });
 
 function calcOrder() {
@@ -58,6 +65,12 @@ function calcOrder() {
   //calculate the cost of the total order
   let totalCost = initialCost + pCost + salesTax;
   orderForm.elements.totalCost.value = formatUSACurrency(totalCost);
+  //store order details
+  orderForm.elements.modelName.value =
+    orderForm.elements.model.options[mIndex].text;
+  orderForm.elements.protectionName.value = document.querySelector(
+    'input[name="protection"]:checked'
+  ).nextSibling.nodeValue;
 }
 
 function formatNumber(val, decimals) {
